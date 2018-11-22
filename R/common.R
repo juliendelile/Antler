@@ -1,6 +1,6 @@
 
 getTFs <- function(){
-  read.table(system.file("extdata", "Annotations/TF_mmusculus_150722.dat", package="Muscle"), row.names=1, header=TRUE, stringsAsFactors=F)[,'gene_name']
+  read.table(system.file("extdata", "Annotations/TF_mmusculus_150722.dat", package="Antler"), row.names=1, header=TRUE, stringsAsFactors=F)[,'gene_name']
 }
 
 fdate <- function(){
@@ -489,27 +489,11 @@ getOptimalModuleNumber_HC <- function(dataset, hc, num_mod_max, numcores, displa
     distortion.vals = unlist(lapply(krange, function(k){getDistortion(k, hc, dataset)}))
   } else {
 
-    # distortion.vals = unlist(parallel::mclapply(krange,
-    #               function(k){getDistortion(k, hc, dataset)},
-    #               mc.cores = min(numcores, length(krange))
-    #             ))
-
-    print("TODO: refactor 10X getOptimalModuleNumber_HC hack !!!")
-
-    # dataset_sparse <- as(dataset, "sparseMatrix")
-
-    # save(dataset_sparse, dataset, hc, krange, numcores, file='/camp/lab/briscoej/working/julien/Muscle/test.Rdata')
-
-    # load("/camp/lab/briscoej/working/julien/Muscle/test.Rdata")
-    #  dataset <- t(scale(t(log(dataset+1)), center=T, scale=T))
-
-    # num_workers = min(numcores, length(krange))
-
     #  outfile="/dev/null" : remove outfile arguments to stop printing workers' outputs
     #  methods=FALSE : do not load packages
     cl <- parallel::makeCluster(
             min(numcores, length(krange)),
-            outfile="/dev/null", #"/camp/lab/briscoej/working/julien/Muscle/temp2",
+            outfile="/dev/null",
             methods=FALSE) 
 
     parallel::clusterExport(cl, c('hc', 'dataset', 'krange'), envir=environment())
@@ -527,15 +511,7 @@ getOptimalModuleNumber_HC <- function(dataset, hc, num_mod_max, numcores, displa
             .noexport=ls(),
             .packages=c('Matrix')
             ) %dopar% {
-      
-      # distortion = getDistortion10X(k, hc, dataset)
-
-      # the dataset is sparse (hence not logscaled)
-      # dataset <- t(scale(t(log(Matrix::as.matrix(dataset_sparse)+1)), center=T, scale=T))
-
-      # dataset <- t(scale(t(log(dataset+1)), center=T, scale=T))
-
-      
+            
       if(any(is.na(dataset))){
         print(paste(k, " contains NA values"))
       }
@@ -883,7 +859,7 @@ list_obj_sizes<-function(
   print(sapply(sizes[order(-as.integer(sizes))],function(s)format(s,unit='auto')))
 }
 
-getCommitShortName <- function(repository_path="/camp/lab/briscoej/working/julien/Muscle"){
+getCommitShortName <- function(repository_path=find.package("Antler")) {
 
 
   repo <- git2r::repository(repository_path)
