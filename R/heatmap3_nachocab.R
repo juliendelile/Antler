@@ -1,31 +1,5 @@
 
-# from https://gist.github.com/nachocab/3853004
-
-# # EXAMPLE USAGE
-
-# # example of colsidecolors rowsidecolors (single column, single row)
-# mat <- matrix(1:100, byrow=T, nrow=10)
-# column_annotation <- sample(c("red", "blue", "green"), 10, replace=T)
-# column_annotation <- as.matrix(column_annotation)
-# colnames(column_annotation) <- c("Variable X")
-
-# row_annotation <- sample(c("red", "blue", "green"), 10, replace=T)
-# row_annotation <- as.matrix(t(row_annotation))
-# rownames(row_annotation) <- c("Variable Y")
-
-# heatmap.3(mat, RowSideColors=row_annotation, ColSideColors=column_annotation)
-
-# # multiple column and row
-# mat <- matrix(1:100, byrow=T, nrow=10)
-# column_annotation <- matrix(sample(c("red", "blue", "green"), 20, replace=T), ncol=2)
-# colnames(column_annotation) <- c("Variable X1", "Variable X2")
-
-# row_annotation <- matrix(sample(c("red", "blue", "green"), 20, replace=T), nrow=2)
-# rownames(row_annotation) <- c("Variable Y1", "Variable Y2")
-
-# heatmap.3(mat, RowSideColors=row_annotation, ColSideColors=column_annotation)
-
-# CODE
+# Adapted from https://gist.github.com/nachocab/3853004
 
 heatmap.3 <- function(x,
                       Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE,
