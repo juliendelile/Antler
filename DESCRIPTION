@@ -1,0 +1,33 @@
+Package: Antler
+Title: ANother Transcriptome-derived Lineage ExploreR
+Version: 0.1.0
+Authors@R: person("Julien", "Delile", email = "julien.delile@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends:
+    R (>= 3.3.2),
+    dplyr (>= 0.5.0),
+    parallel (>= 3.3.2),
+    ggplot2 (>= 2.2.1),
+    gplots (>= 2.17.0),
+    heatmap.plus (>= 1.3),
+    moments (>= 0.14),
+    Biobase (>= 2.34.0),
+    biomaRt (>= 2.30.0),
+    foreach (>= 1.4.3),
+    doSNOW (>= 1.0.15),
+    git2r (>= 0.19.0),
+    pdist (>= 1.2)
+License: What license is it under?
+LazyData: true
+RoxygenNote: 6.0.1.9000
+Collate:
+    'binarize_array.R'
+    'common.R'
+    'dimension_reduction.R'
+    'heatmap3_nachocab.R'
+    'main.R'
+NeedsCompilation: no
+Packaged: 2017-10-25 16:37:12 UTC; delilej
+Author: Julien Delile [aut, cre]
+Maintainer: Julien Delile <julien.delile@gmail.com>
+biocViews: Software
