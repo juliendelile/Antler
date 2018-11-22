@@ -16,12 +16,12 @@ Depends:
     foreach (>= 1.4.3),
     doSNOW (>= 1.0.15),
     git2r (>= 0.19.0),
-    pdist (>= 1.2)
+    pdist (>= 1.2),
+    ArrayBin (>= 0.2)
 License: What license is it under?
 LazyData: true
 RoxygenNote: 6.0.1.9000
 Collate:
-    'binarize_array.R'
     'common.R'
     'dimension_reduction.R'
     'heatmap3_nachocab.R'
