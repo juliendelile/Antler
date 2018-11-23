@@ -1,7 +1,7 @@
 # Antler
 
 **DISCLAIMER: This repository is under construction. The code is being
-refactored and ***has not been tested**.
+refactored and has not been tested**.
 
 Antler is a R package containing a set of methods used to analyse single-cell RNA-seq experiments. 
 
