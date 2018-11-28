@@ -372,6 +372,14 @@ Antler <- setRefClass(
         }
       },
 
+      excludeGenes = function(gene_names=NULL){
+        excludeGenesFromIds(gene_ids = which(getGeneNames() %in% gene_names))
+      },
+
+      filterGenes = function(gene_names=NULL){
+        excludeGenesFromIds(gene_ids = which(!getGeneNames() %in% gene_names))
+      },
+
       excludeUnexpressedGenes = function(min.cells=3, min.level = 0, verbose=FALSE, data_status='Check'){
   
         readcounts = getReadcounts(data_status=data_status)
@@ -1119,6 +1127,10 @@ Antler <- setRefClass(
         if(write_report){write_report_file()}
 
         },
+
+      dispersedGenes = function(data_status='Check', zscore_threshold=0){
+        return(getDispersedGenes(getReadcounts(data_status=data_status), zscore_threshold=zscore_threshold))
+      },
 
       # Monocle 2 (Install first with http://cole-trapnell-lab.github.io/monocle-release/getting-started/)
       runMonocle2DETestOnClusters = function(clustering_method='hclust', ref_clusters=c("1"), alt_clusters=unique(cellClusters[[clustering_method]]$cell_ids), dispersion_selection=TRUE) {
