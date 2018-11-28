@@ -500,7 +500,7 @@ getOptimalModuleNumber_HC <- function(dataset, hc, num_mod_max, numcores, displa
 
     doSNOW::registerDoSNOW(cl)
 
-    cat('Run parallel distortion jobs\n')
+    cat('\nRun parallel distortion jobs\n')
     pb <- txtProgressBar(max = length(krange), style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
@@ -766,7 +766,9 @@ plotHeatmapCellsGeneModules <- function(mat, genemodules, filename, cells_colors
 }
 
 # Download and load Genes/GO terms association from BioMart
-getGenesFromGOterms <- function(goids_list, dataset='mmusculus_gene_ensembl', gofilename='./inst/extdata/Annotations/gene_goterms.txt'){
+getGenesFromGOterms <- function(goids_list, dataset='mmusculus_gene_ensembl', gofilename=system.file("extdata", "Annotations/gene_goterms.txt", package="Antler")){
+
+
 
   require(dplyr) # summarise_each
 
