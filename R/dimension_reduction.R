@@ -71,8 +71,7 @@ TopCorr_DR <- setRefClass(
         if(any(is.na(corr_matrix))) {
           if(verbose){cat("Calculate gene-gene correlation matrix\n")}
           used.genes = rownames(readcounts)
-          # correlation_matrix <<- fastCor(t(readcounts[used.genes,]), method="spearman")
-
+          
           if(
               (is.na(corrgenes_t) & is.na(corr_t)) |
               (!is.na(corrgenes_t) & !is.na(corr_t)) 
@@ -94,8 +93,6 @@ TopCorr_DR <- setRefClass(
         } else {
 
           used.genes = rownames(corr_matrix)
-          # correlation_matrix <<- corr_matrix
-          # corr_matrix = corr_matrix
 
           if(is.na(corrgenes_t) & !is.na(corr_t)){
 
@@ -110,33 +107,17 @@ TopCorr_DR <- setRefClass(
             stop('either "corrgenes_t" or "corr_t" must be specified, not both.')
           }
 
-          # corr_matrix_thres = abs(fastCor(t(readcounts), method="spearman")) >= correlation_thres
           corr_matrix_thres = abs(corr_matrix) >= correlation_thres
           corr_genes = names(which(colSums(corr_matrix_thres) > corr_min))
         }
        
-        # if(is.na(corrgenes_t) & !is.na(corr_t)){
-        #   if(corr_quantile){
-        #     correlation_thres <<- quantile(abs(local_correlation_matrix), prob=corr_t)
-        #   } else {
-        #     correlation_thres <<- corr_t
-        #   }
-        # } else if(!is.na(corrgenes_t) & is.na(corr_t)){
-        #   correlation_thres <<- getCorThreshold(local_correlation_matrix, init_corr_t=.2, numgenes_target=corrgenes_t, corr_min=corr_min, numcores=numcores)
-        # } else {
-        #   stop('either "corrgenes_t" or "corr_t" must be specified, not both.')
-        # }
-
-        # corr_matrix_thres = abs(local_correlation_matrix) >= correlation_thres
-        # corr_genes = names(which(colSums(corr_matrix_thres) > corr_min)) 
-
         if(reduce_memory && exists("corr_matrix_thres")){
           rm(corr_matrix_thres)
           for (i in 1:10) gc()
         }
         
         verbose.1 = paste0('\nSelect correlated genes: ', length(corr_genes),' genes out of ', length(used.genes),' (threshold: ', sprintf("%.3f", correlation_thres),')')
-        # verbose.1 = paste0('Select correlated genes: ', length(corr_genes),' genes out of ', length(used.genes), ' (r > ', correlation_thres,')\n')
+        
         if(verbose){cat(verbose.1)}
         report <<- paste0(report, verbose.1)
 
