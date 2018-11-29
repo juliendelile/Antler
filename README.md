@@ -2,7 +2,7 @@
 
 # Antler
 
-Antler is an in-development R package containing a set of methods used to analyse single-cell RNA-seq experiments. 
+Antler is an **in-development** R package containing a set of methods used to analyse single-cell RNA-seq experiments. 
 
 The easiest way to install Antler is to use the devtools package.
 
