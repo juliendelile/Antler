@@ -224,7 +224,11 @@ Antler <- setRefClass(
           plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), reads_name, "_statistics_", category, "_by_", by, ".pdf")
           plotnames <- c(plotnames, plotname)
           pdf(plotname, width=7, height=4, useDingbats=FALSE)
-          gridExtra::grid.arrange(grobs=rplots, layout_matrix=matrix(seq(6), ncol=3, byrow=T))
+
+          numplots = length(unique(pData(expressionSet)[, by]))
+          numcol = min(3, numplots)
+          numrow = ceiling(numplots/3)
+          gridExtra::grid.arrange(grobs=rplots, layout_matrix=matrix(numcol*numrow, ncol=numcol, byrow=T))
           graphics.off()
 
           cat_colors = RColorBrewer::brewer.pal(9, "Set1")[seq(length(unique(pData(expressionSet)[, category])))]
