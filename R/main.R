@@ -439,7 +439,7 @@ Antler <- setRefClass(
         if(write_report){write_report_file()}
         },
   
-      removeGenesFromRatio = function(threshold=.1, candidate_genes=NA, verbose=F, plot_ratios=FALSE, file_path=NULL, data_status='Raw') {
+      removeGenesFromRatio = function(threshold=.1, candidate_genes=NA, verbose=T, plot_ratios=FALSE, file_path=NULL, data_status='Raw') {
 
         if(identical(candidate_genes, NA)){
           stop("candidate genes are missing.")
