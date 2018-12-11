@@ -228,7 +228,7 @@ Antler <- setRefClass(
           numplots = length(unique(pData(expressionSet)[, by]))
           numcol = min(3, numplots)
           numrow = ceiling(numplots/3)
-          gridExtra::grid.arrange(grobs=rplots, layout_matrix=matrix(numcol*numrow, ncol=numcol, byrow=T))
+          gridExtra::grid.arrange(grobs=rplots, layout_matrix=matrix(seq(numcol*numrow), ncol=numcol, byrow=T))
           graphics.off()
 
           cat_colors = RColorBrewer::brewer.pal(9, "Set1")[seq(length(unique(pData(expressionSet)[, category])))]
