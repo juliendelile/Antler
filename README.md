@@ -7,7 +7,7 @@ Antler is an **in-development** R package containing a set of methods used to an
 The easiest way to install Antler is to use the devtools package.
 
 ``` r
-devtools::github_install("juliendelile/Antler")
+devtools::install_github("juliendelile/Antler")
 ```
 
 ### Unbiased Gene Modules Identification  
