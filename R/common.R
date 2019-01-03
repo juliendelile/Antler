@@ -872,7 +872,7 @@ getCommitShortName <- function(repository_path=find.package("Antler")) {
     }
   }
 
-  fullcommit = git2r::commits(repo)[[1]]@sha
+  fullcommit = git2r::commits(repo)[[1]]$sha
   shortcommit = substr(fullcommit, 0, 7)
 
   return(shortcommit)
