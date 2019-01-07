@@ -23,7 +23,6 @@ LazyData: true
 RoxygenNote: 6.0.1.9000
 Collate:
     'common.R'
-    'common_dev.R'
     'dimension_reduction.R'
     'heatmap3_nachocab.R'
     'main.R'
