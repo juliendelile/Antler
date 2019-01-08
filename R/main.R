@@ -3,7 +3,6 @@
 #'
 #' @field expressionSet test
 #' @field dR test
-#' @include dimension_reduction.R
 
 Antler <- setRefClass(
     Class = "Antler",

@@ -37,8 +37,6 @@ DR <- setRefClass(
       )
   )
 
-#' @include common.R
-
 TopCorr_DR <- setRefClass(
     Class = "TopCorr_DR",
 
