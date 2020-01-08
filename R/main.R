@@ -54,7 +54,67 @@ Antler <- setRefClass(
               file=filepath)
       },
 
-      loadDataset = function(folderpath=NULL, assayData=NULL, phenoData=NULL, data_status='Raw', default_gene_names='ensembl_gene_id'){
+      loadDataset = function(folderpath=NULL, assayData=NULL, phenoData=NULL, data_status='Raw', default_gene_names='ensembl_gene_id', phenoData_filename="phenoData.csv", assayData_filename="assayData.csv"){
+
+        if(is.null(folderpath)) {
+          if(is.null(assayData) & is.null(phenoData)){
+            stop('input dataset is missing')
+          }
+          expressionSet <<- ExpressionSet(
+            assayData=assayData,
+            phenoData=phenoData
+            )
+          processing_state <<- c(processing_state, paste0(fdate(), ' Dataset loaded from provided data.frames (', data_status, ')'))
+        } else {
+          expressionSet <<- ExpressionSet(
+            assayData=as.matrix(read.table(paste0(folderpath, '/', assayData_filename), header=TRUE, sep="\t", row.names=1, as.is=TRUE, stringsAsFactors=F, check.names=FALSE)),
+            phenoData=new("AnnotatedDataFrame", data=read.table(paste0(folderpath, '/', phenoData_filename), header=TRUE, sep="\t", row.names=1, as.is=TRUE, stringsAsFactors=F, check.names=FALSE))
+          )
+
+          if(file.exists(paste0(folderpath, '/featureData.csv'))){
+            fd = read.table(file=paste0(folderpath, '/featureData.csv'), sep='\t', row.names=1, header=T, check.names=FALSE)
+            for(n in colnames(fd)){
+              fData(expressionSet)[,n] <<- fd[,n]
+            }
+          }
+
+          processing_state <<- c(processing_state, paste0(fdate(), ' Dataset loaded from ', folderpath, ' (', data_status, ')'))
+        }
+
+        pData(expressionSet)$cells_samples <<- generateCellSampleNames(pData(expressionSet))
+
+        pData(expressionSet)$cells_samples_fullname <<- generateCellSampleFullNames(pData(expressionSet))
+
+        pData(expressionSet)$cells_fulltreatment <<- generateCellFullTreatments(pData(expressionSet))
+
+        pData(expressionSet)$cells_colors <<- generateCellColors(pData(expressionSet))
+
+        fData(expressionSet)[, default_gene_names] <<- rownames(exprs(expressionSet))
+        
+        fData(expressionSet)$current_gene_names <<- fData(expressionSet)[, default_gene_names]
+
+        if(data_status=="Raw"){
+          readcounts_raw <<- exprs(expressionSet)
+          readcounts_norm <<- matrix()
+          readcounts_smoothed <<- matrix()
+        } else if(data_status=="Normalized"){
+          readcounts_norm <<- exprs(expressionSet)
+          readcounts_raw <<- matrix()
+          readcounts_smoothed <<- matrix()
+        } else if (data_status=="Smoothed"){
+          readcounts_smoothed <<- exprs(expressionSet)
+          readcounts_raw <<- matrix()
+          readcounts_norm <<- matrix()
+        } else {
+          stop(paste0("The status of the dataset ('data_status') must be either 'Raw', 'Normalized' or 'Smoothed' (not '", data_status, "')."))
+        }
+
+        if(write_report)
+          write_report_file()
+
+      },
+
+      loadDataset0 = function(folderpath=NULL, assayData=NULL, phenoData=NULL, data_status='Raw', default_gene_names='ensembl_gene_id'){
 
         if(is.null(folderpath)) {
           if(is.null(assayData) & is.null(phenoData)){
@@ -185,7 +245,98 @@ Antler <- setRefClass(
           write_report_file()
       },
 
-      plotReadcountStats = function(data_status='Raw', basename=NULL, reads_name="UMI", by="timepoint", category=NA){
+      plotReadcountStats = function(data_status='Raw', basename=NULL, reads_name="UMI", by="timepoint", category=NA, cat_colors = RColorBrewer::brewer.pal(9, "Set1")[seq(length(unique(pData(expressionSet)[, category])))]){
+
+        plotnames = c()
+        
+        plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), reads_name, "_statistics_all.pdf")
+        plotnames <- c(plotnames, plotname)
+        pdf(plotname, width=10, height=4, useDingbats=FALSE)
+        par(mfrow = c(1,3))
+        hist(log10(colSums(getReadcounts(data_status=data_status))), breaks=200, main=paste0("Total ", reads_name, " count per cell (log10)"), xlab="")
+        hist(log10(colSums(getReadcounts(data_status=data_status)>0)), breaks=200, main=paste0("Expressed ", reads_name, " per cell (log10)"), xlab="")
+        hist(log10(colMeans(getReadcounts(data_status=data_status))), breaks=200, main=paste0("Average ", reads_name, " count per cell (log10)"), xlab="")
+        graphics.off()
+
+        if(!identical(NA, category) & category %in% colnames(pData(expressionSet))) {
+
+          stat.df = cbind.data.frame(
+                      "TotalReadcounts"=colSums(getReadcounts(data_status=data_status)),
+                      "Gene_count"=colSums(1*(getReadcounts(data_status=data_status)>0)),
+                      "by"=pData(expressionSet)[, by],
+                      "category"=pData(expressionSet)[, category]
+                      ) %>%
+                # dplyr::group_by(by) %>%
+                dplyr::mutate(category = factor(as.numeric(factor(category))))
+                # dplyr::ungroup()
+
+          rplots <- lapply(unique(stat.df$by), function(t){
+                ggplot(stat.df[which(stat.df$by==t),]) +
+                  geom_freqpoly(aes(x=TotalReadcounts, linetype=factor(category)), position="identity", bins=30) +
+                  scale_x_log10() +
+                  theme(legend.position="none") + xlab(paste0("Total ", reads_name, " count")) +
+                  ylab("Count") + 
+                  ggtitle(paste0("Stage ",t)) + ylim(0, 800) +
+                  scale_colour_gradient(limits=c(.5,1))
+            })
+
+          plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), reads_name, "_statistics_", category, "_by_", by, ".pdf")
+          plotnames <- c(plotnames, plotname)
+          pdf(plotname, width=7, height=4, useDingbats=FALSE)
+
+          numplots = length(unique(pData(expressionSet)[, by]))
+          numcol = min(3, numplots)
+          numrow = ceiling(numplots/3)
+          gridExtra::grid.arrange(grobs=rplots, layout_matrix=matrix(seq(numcol*numrow), ncol=numcol, byrow=T))
+          graphics.off()
+
+          p <- stat.df[, c('by', 'category')] %>%
+                dplyr::group_by(by, category) %>%
+                dplyr::summarize(count=n()) %>%
+                dplyr::ungroup() %>%
+                ggplot() + geom_bar(aes(factor(by), weight=count, fill=factor(category)), color="black", size=.3) +
+                ylab("Cells") + xlab(by) + scale_fill_manual(values=cat_colors, name = category) +
+                theme_classic()
+
+          plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), "statistics_cellNumber_", category, "_by_", by, ".pdf")
+          plotnames <- c(plotnames, plotname)
+          pdf(plotname, width=5, height=3, useDingbats=FALSE)
+          print(p)
+          graphics.off()
+
+          p <- stat.df %>% 
+              ggplot() + geom_violin(aes(x=interaction(category, by), y=TotalReadcounts, fill=category)) +
+                scale_y_log10() +
+                ylab(paste0(reads_name, " per Cell")) + xlab(paste0(by, " X ", category)) + scale_fill_manual(values=cat_colors, name = category) +
+                theme_minimal()
+
+          plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), "statistics_counts_", category, "_by_", by, ".pdf")
+          plotnames <- c(plotnames, plotname)
+          pdf(plotname, width=5, height=5, useDingbats=FALSE)
+          print(p)
+          graphics.off()
+
+          p <- stat.df %>% 
+              ggplot() + geom_violin(aes(x=interaction(category, by), y=Gene_count, fill=category)) +
+                scale_y_log10() +
+                ylab("Gene per Cell") + xlab(paste0(by, " X ", category)) + scale_fill_manual(values=cat_colors, name = category) +
+                theme_minimal()
+
+          plotname = paste0(plot_folder, "/", basename, ifelse(is.null(basename), "", "_"), "statistics_geneCounts_", category, "_by_", by, ".pdf")
+          plotnames <- c(plotnames, plotname)
+          pdf(plotname, width=5, height=5, useDingbats=FALSE)
+          print(p)
+          graphics.off()
+
+        }
+
+        processing_state <<- c(processing_state, paste0(fdate(), ' Plot ', reads_name, ' count statistics (', paste0(plotnames, collapse=', '), ')'))
+
+        if(write_report)
+          write_report_file()
+      },
+
+      plotReadcountStats0 = function(data_status='Raw', basename=NULL, reads_name="UMI", by="timepoint", category=NA){
 
         plotnames = c()
         
@@ -322,7 +473,7 @@ Antler <- setRefClass(
 
         }
         
-        # ! first column must have unique names (default: unique "ensembl_id")
+        # ! first column must have unique names (default: unique "ensembl_id")
 
         renamed_genes_ids = which(fData(expressionSet)$ensembl_gene_id %in% gene_names_ids.df$ensembl_gene_id)
 
