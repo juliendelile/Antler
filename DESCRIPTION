@@ -1,11 +1,12 @@
 Package: Antler
-Title: ANother Transcriptome-derived Lineage ExploreR
-Version: 0.1.0
+Title: ANother Transcriptome Lineage ExploreR
+Version: 0.9.0
 Authors@R: person("Julien", "Delile", email = "julien.delile@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends:
     R (>= 3.3.2),
     dplyr (>= 0.5.0),
+    igraph (>= 1.0.1),
     parallel (>= 3.3.2),
     ggplot2 (>= 2.2.1),
     gplots (>= 2.17.0),
@@ -17,17 +18,40 @@ Depends:
     doSNOW (>= 1.0.15),
     git2r (>= 0.23.0),
     pdist (>= 1.2),
-    ArrayBin (>= 0.2)
+    ArrayBin (>= 0.2),
+    expm (>= 0.999),
+    gridExtra (>= 2.3),
+    alluvial (>= 0.1.2),
+    mco (>= 1.0.15),
+    rgexf (>= 0.15.3),
+    GenSA (>= 1.1.7),
+    pheatmap
 License: GNU General Public License v3.0
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 7.0.2
 Collate:
-    'common.R'
-    'dimension_reduction.R'
-    'heatmap3_nachocab.R'
+    'zzz.R'
+    'cell_state_graph.R'
+    'cell_state_graph_functions.R'
+    'pseudotime_functions.R'
+    'plot_functions.R'
+    'utils_functions.R'
+    'gene_modules.R'
+    'gene_modules_functions.R'
+    'cell_clusters.R'
+    'carver.R'
+    'carver_functions.R'
     'main.R'
 NeedsCompilation: no
 Packaged: 2017-10-25 16:37:12 UTC; delilej
 Author: Julien Delile [aut, cre]
 Maintainer: Julien Delile <julien.delile@gmail.com>
 biocViews: Software
+Encoding: UTF-8
+Suggests: 
+    knitr,
+    rmarkdown,
+    png
+VignetteBuilder: knitr
+URL: https://github.com/juliendelile/Antler/
+BugReports: https://github.com/juliendelile/Antler/issues

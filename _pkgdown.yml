@@ -1,0 +1,21 @@
+template:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  structure:
+    left:  [Transcriptomic-summary, Carving, reference]
+    right: [github]
+
+  components:
+    home: ~
+    articles: ~
+    Transcriptomic-summary:
+      text: "Transcriptomic Summary"
+      href: articles/Transcriptomic-summary.html
+    Carving:
+      text: "Carving Cell Trajectories"
+      href: articles/Carving-cell-trajectories.html
+
+home:
+  strip_header: false
