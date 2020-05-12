@@ -2,7 +2,7 @@
 
 # ANTLER
 
-**Antler** (**An**other **t**ranscriptomic **l**ineage **e**xplore**r**) is an R package providing a set of methods for analysing single-cell RNA-seq experiments.
+**Antler** (**An**other **t**ranscriptome **l**ineage **e**xplore**r**) is an R package providing a set of methods for analysing single-cell RNA-seq experiments.
 
 The idea behind **Antler** is to perform completely unbiased and data-driven analysis to enable the discovery of novel candidate genes and transcriptomic states.
 
@@ -28,7 +28,7 @@ Some of the plots produced in the two vignettes include:
 
 * the transcriptomic summary of the cell states
 
-<p align="center"><img src="https://raw.githubusercontent.com/juliendelile/Antler/master/vignettes/images/Transcriptome_summary_selection_I_hclust_selection_I_Normalized_logscaled.png" width="70%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/juliendelile/Antler/master/vignettes/images/Transcriptome_summary_selection_I_hclust_selection_I_Normalized_logscaled.png" width="90%"></p>
 
 * the cell state graph enabling the pseudotime ordering of the cells.
 
