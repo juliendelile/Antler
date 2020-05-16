@@ -70,7 +70,7 @@ Once the data-driven transcriptomic states are defined, the user has two options
 
 * either selecting manually the modules containing known genes involved in the biological context and new candidate ones hence defining context-dependent transcriptomic states,
 
-* or taking advantage of the `carve()` function which select automatically the gene modules related to time-dependent differentiation and build graph-based trajectories (see) the "Carving cell trajectories" vignette).
+* or taking advantage of the `carve()` function which select automatically the gene modules related to time-dependent differentiation and build graph-based trajectories (see [Carving cell trajectories](https://juliendelile.github.io/Antler/articles/Carving-cell-trajectories.html)).
 
 ## Creating an Antler object
 
