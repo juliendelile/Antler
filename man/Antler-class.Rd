@@ -4,14 +4,8 @@
 \name{Antler-class}
 \alias{Antler-class}
 \alias{Antler}
-\title{A Reference Class to interface the Antler package.}
+\title{Interface of the Antler package (reference class).}
 \description{
-TODO
+Interface of the Antler package (reference class).
 }
-\section{Fields}{
-
-\describe{
-\item{\code{output_folder}}{a character string indicating the output directory.}
-}}
-
 

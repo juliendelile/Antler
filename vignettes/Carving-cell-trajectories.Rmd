@@ -235,15 +235,15 @@ pdf_to_png_to_images("/tmp/demo_carvings/carvings_SA_cell_state_graph.pdf")
 
 ### Canalization
 
-By default, the cell-cell similarity matrix from which the k-nearest neighbors graph is deduced is not solely equal to the weighted euclidean distance matrix. If the `canalize` argument is set to `TRUE`, the weighted euclidean distance matrix is divided element-wise by a diffusion kernel calculated from the optimal cMST adjacency matrix. 
+By default, the cell-cell similarity matrix from which the k-nearest neighbors graph is deduced is not solely equal to the weighted euclidean distance matrix. If the `canalize` argument is set to `TRUE`, the weighted euclidean distance matrix is divided element-wise by a gaussian kernel calculated from the optimal cMST adjacency matrix. 
 
 This counteracts the detrimental effect of gene expression stochasticity which often brings together cells with very different transcriptomes due the spurrious expression of the same set of genes in these cells.
 
-The diffusion kernel scales the weighted euclidean distance by increasing exponentially the distance of cells which are farther apart in the optimal cMST. This reshape the cell trajectories by guiding them along the canals formed by the optimal cMST.
+The gaussian kernel scales the weighted euclidean distance by increasing exponentially the distance of cells which are farther apart in the optimal cMST. This reshape the cell trajectories by guiding them along the canals formed by the optimal cMST.
 
 [show cell cell distance, weighted cell cell distance, cMST distance/proba, canalized distance]
 
-The only free parameter of the method is the width of kernel `kernel_sigma`, set to 1 community by default. If the width tends to infinity, the element of the diffusion kernel tend to 1, hence negating the effect of canalization. 
+The only free parameter of the method is the width of kernel `kernel_sigma`, set to 1 community by default. If the width tends to infinity, the element of the gaussian kernel tend to 1, hence negating the effect of canalization. 
 
 The influence of kernel width on the resulting cell state graph can be observed with `antler$test_kernel_widths()`.
 
@@ -257,7 +257,7 @@ antler$test_kernel_widths(
 pdf_to_png_to_images("/tmp/demo_carvings/candidate_kernel_params.pdf")
 ```
 <p align="center"><img src="./images/candidate_kernel_params.png" width="100%"></p>
-<p align="center"><i>Influence of the diffusion kernel width on how the cell state graph is canalized by the optimal cMST.</i></p><br>
+<p align="center"><i>Influence of the gaussian kernel width on how the cell state graph is canalized by the optimal cMST.</i></p><br>
 
 ### Optimizing with NSGA-2
 

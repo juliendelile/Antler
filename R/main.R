@@ -1,3 +1,6 @@
+#' Interface of the Antler package (reference class).
+#'
+#' @export Antler
 Antler <- setRefClass(
 
   Class = "Antler",
@@ -1460,8 +1463,8 @@ Antler$methods(
 #' @param cluster_size_limit integer value. The maximum cell cluster size. If NULL (default) the \code{cluster_size_limit_ratio} argument is used instead.
 #' @param cluster_size_limit_ratio numeric value. Specifies the maximum cell cluster size as a ratio of the total number of cells. Default to 0.02.
 #' @param clustering_timepoint_first logical. Whether to pre-cluster the cells by 'timepoint' or not (default).
-#' @param canalize logical. Whether to constraint the cell state graph using a diffusion kernel obtained from the optimal cluster level graph. Default to TRUE.
-#' @param kernel_sigma numeric value. Defines the standard deviation of the diffusion kernel used to canalize the trajectories. Default to 1.
+#' @param canalize logical. Whether to constraint the cell state graph using a gaussian kernel obtained from the optimal cluster level graph. Default to TRUE.
+#' @param kernel_sigma numeric value. Defines the standard deviation of the gaussian kernel used to canalize the trajectories. Default to 1.
 #' @param allow_multiple_roots (Experimental) logical. Whether to allow reconstructed cell lineages to start from multiple root states. Default to FALSE.
 #' @param output_name character string. The name of the directory storing the processing plots. This directory will be created in the Antler's object output directory.
 #' @param cell_colors character string. The name of the phenotypic metadata to show on the cell state graph plots. Default to 'cells_samples'.
@@ -1617,11 +1620,11 @@ Antler$methods(
   }
 )
 
-#' Plot cell state graph over different diffusion kernel widths
+#' Plot cell state graph over different gaussian kernel widths
 #'
 #' This function must be called after the trajectories have been carved (see \code{carve}).
 #' @name test_kernel_widths
-#' @param kernel_sigmas a numeric vector specifying the candidate standard deviations of the diffusion kernel used to canalize the trajectories. Default to \code{c(1, 5, 10, 25, 50, 1000)}.
+#' @param kernel_sigmas a numeric vector specifying the candidate standard deviations of the gaussian kernel used to canalize the trajectories. Default to \code{c(1, 5, 10, 25, 50, 1000)}.
 #' @param cell_colors character string. The name of the phenotypic metadata to show on the cell state graph plots. Default to 'cells_samples'.
 #' @param plot_name character string. The filename of the output plot file. Default to 'candidate_kernel_params.pdf'.
 Antler$methods(

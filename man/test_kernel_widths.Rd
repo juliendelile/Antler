@@ -2,9 +2,9 @@
 % Please edit documentation in R/main.R
 \name{test_kernel_widths}
 \alias{test_kernel_widths}
-\title{Plot cell state graph over different diffusion kernel widths}
+\title{Plot cell state graph over different gaussian kernel widths}
 \arguments{
-\item{kernel_sigmas}{a numeric vector specifying the candidate standard deviations of the diffusion kernel used to canalize the trajectories. Default to \code{c(1, 5, 10, 25, 50, 1000)}.}
+\item{kernel_sigmas}{a numeric vector specifying the candidate standard deviations of the gaussian kernel used to canalize the trajectories. Default to \code{c(1, 5, 10, 25, 50, 1000)}.}
 
 \item{cell_colors}{character string. The name of the phenotypic metadata to show on the cell state graph plots. Default to 'cells_samples'.}
 

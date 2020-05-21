@@ -255,11 +255,11 @@
 <div id="canalization" class="section level3">
 <h3 class="hasAnchor">
 <a href="#canalization" class="anchor"></a>Canalization</h3>
-<p>By default, the cell-cell similarity matrix from which the k-nearest neighbors graph is deduced is not solely equal to the weighted euclidean distance matrix. If the <code>canalize</code> argument is set to <code>TRUE</code>, the weighted euclidean distance matrix is divided element-wise by a diffusion kernel calculated from the optimal cMST adjacency matrix.</p>
+<p>By default, the cell-cell similarity matrix from which the k-nearest neighbors graph is deduced is not solely equal to the weighted euclidean distance matrix. If the <code>canalize</code> argument is set to <code>TRUE</code>, the weighted euclidean distance matrix is divided element-wise by a gaussian kernel calculated from the optimal cMST adjacency matrix.</p>
 <p>This counteracts the detrimental effect of gene expression stochasticity which often brings together cells with very different transcriptomes due the spurrious expression of the same set of genes in these cells.</p>
-<p>The diffusion kernel scales the weighted euclidean distance by increasing exponentially the distance of cells which are farther apart in the optimal cMST. This reshape the cell trajectories by guiding them along the canals formed by the optimal cMST.</p>
+<p>The gaussian kernel scales the weighted euclidean distance by increasing exponentially the distance of cells which are farther apart in the optimal cMST. This reshape the cell trajectories by guiding them along the canals formed by the optimal cMST.</p>
 <p>[show cell cell distance, weighted cell cell distance, cMST distance/proba, canalized distance]</p>
-<p>The only free parameter of the method is the width of kernel <code>kernel_sigma</code>, set to 1 community by default. If the width tends to infinity, the element of the diffusion kernel tend to 1, hence negating the effect of canalization.</p>
+<p>The only free parameter of the method is the width of kernel <code>kernel_sigma</code>, set to 1 community by default. If the width tends to infinity, the element of the gaussian kernel tend to 1, hence negating the effect of canalization.</p>
 <p>The influence of kernel width on the resulting cell state graph can be observed with <code>antler$test_kernel_widths()</code>.</p>
 <div class="sourceCode"><html><body><pre class="r"><span class="no">antler</span>$<span class="fu"><a href="../reference/test_kernel_widths.html">test_kernel_widths</a></span>(
   <span class="kw">kernel_sigmas</span>     <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">.02</span>, <span class="fl">.05</span>, <span class="fl">.05</span>, <span class="fl">.08</span>, <span class="fl">.1</span>, <span class="fl">.2</span>, <span class="fl">.5</span>, <span class="fl">.8</span>, <span class="fl">1</span>),
@@ -267,7 +267,7 @@
 <p align="center">
 <img src="images/candidate_kernel_params.png" width="100%"></p>
 <p align="center">
-<i>Influence of the diffusion kernel width on how the cell state graph is canalized by the optimal cMST.</i>
+<i>Influence of the gaussian kernel width on how the cell state graph is canalized by the optimal cMST.</i>
 </p>
 <p><br></p>
 </div>

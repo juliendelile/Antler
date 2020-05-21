@@ -32,9 +32,9 @@ Multiple elements can be specified if the optimization strategy is set to 'GA' b
 
 \item{clustering_timepoint_first}{logical. Whether to pre-cluster the cells by 'timepoint' or not (default).}
 
-\item{canalize}{logical. Whether to constraint the cell state graph using a diffusion kernel obtained from the optimal cluster level graph. Default to TRUE.}
+\item{canalize}{logical. Whether to constraint the cell state graph using a gaussian kernel obtained from the optimal cluster level graph. Default to TRUE.}
 
-\item{kernel_sigma}{numeric value. Defines the standard deviation of the diffusion kernel used to canalize the trajectories. Default to 1.}
+\item{kernel_sigma}{numeric value. Defines the standard deviation of the gaussian kernel used to canalize the trajectories. Default to 1.}
 
 \item{allow_multiple_roots}{(Experimental) logical. Whether to allow reconstructed cell lineages to start from multiple root states. Default to FALSE.}
 
