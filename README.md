@@ -22,6 +22,24 @@ if (!require("devtools")) {
 }
 devtools::install_github("juliendelile/Antler", dependencies = TRUE)
 ```
+Unfortunately, two dependencies (ArrayBin and heatmap.plus) are now only accessible on CRAN archive so they must be installed manually first.
+
+* ArrayBin
+
+```r
+# ArrayBin requires SAGx from Bioconductor
+install.packages("BiocManager")
+BiocManager::install(version = "3.13")
+BiocManager::install("SAGx")
+
+devtools::install_version('ArrayBin', version = '0.2')
+```
+
+* heatmap.plus
+
+```r
+devtools::install_version('heatmap.plus', version = '1.3')
+```
 ### Examples
 
 Some of the plots produced in the two vignettes include:
